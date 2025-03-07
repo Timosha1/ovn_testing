@@ -53,7 +53,7 @@ test('xusd tvl', async ({ page }) => {
 
     const tvlValue = await expectValidNumberValue(tvlText);
     expect(tvlValue).toBeGreaterThan(100000);
-    console.log(`Значение avApyValue в норме: ${tvlValue}`);
+    console.log(`Значение XUSD TVL в норме: ${tvlValue}`);
 });
 
 test('av xusd apy', async ({ page }) => {
