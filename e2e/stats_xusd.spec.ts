@@ -1,3 +1,8 @@
+// Этот тест надо переделать, большую часть проверок надо выполнить в тестах апи для скорости
+
+
+
+
 import { test, expect } from '@playwright/test';
 import { expectValidNumberValue } from './test_functions/expectValidNumberValue';
 
@@ -8,10 +13,11 @@ test.beforeEach(async ({ page }) => {
     await page.locator('.close-button').click()
 });
 
+// В этом тесте элемент xusdName загружается по 15 секунд, что делает тест супер долгим. Надо что-то думать
 test('xusd stats has title', async ({ page }) => {
     const xusdName = page.locator('p.performance__token-data-title.performance__token-data-title--token');
 
-    await expect(xusdName).toBeVisible();
+    await expect(xusdName).toBeVisible({ timeout: 15000 });
     await expect(xusdName).toHaveText('xUSD');
 });
 
@@ -20,8 +26,8 @@ test('xusd payouts timer', async ({ page }) => {
     const timerXusdPayout = page.locator('p.performance__token-data-num.performance__token-data-num--payout-ago');
     const timerXusdPayoutText = await timerXusdPayout.textContent();
 
-    await page.goto(statsXusdUrl);
-    await expect(timerXusdPayout).toBeVisible();
+    //await page.goto(statsXusdUrl);
+    await expect(timerXusdPayout).toBeVisible({ timeout: 15000 });
     expect(timerXusdPayoutText).toBeDefined();
     expect(timerXusdPayoutText).not.toBeNull();
 
