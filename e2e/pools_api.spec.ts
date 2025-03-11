@@ -15,7 +15,7 @@ import {
 const baseUrl = 'https://aggregator.overnight.fi/pools/v2';
 
 
-test('Проверка общего API запроса Pools на странице пулов', async ({
+test('Generic Pools API request  sent from pools page', async ({
                                                                      page
                                                                    }) => {
   await page.goto('https://app.overnight.fi/pools');
@@ -34,7 +34,6 @@ interface PoolTestCase {
   expectedToken0Symbol: string;
   expectedToken1Symbol: string;
   expectedPoolAddress: string;
-
 }
 
 const poolTestCases: PoolTestCase[] = [{
@@ -45,7 +44,7 @@ const poolTestCases: PoolTestCase[] = [{
   expectedToken0Symbol: 'USDC',
   expectedToken1Symbol: 'USD+',
   expectedPoolAddress: '0x0c1A09d5D0445047DA3Ab4994262b22404288A3B',
-},
+  },
   {
     search: 'WETH/USD+',
     chainId: '8453',
@@ -145,12 +144,6 @@ test.describe('Проверка API пулов для разных пар', () =
       expect(body).toBeDefined();
       expect(Array.isArray(body.pools)).toBe(true);
       expect(body.pools.length).toBeGreaterThan(0);
-
-      // const pool = body.pools.find((pool: Pool) => {
-      //   return pool.name?.includes(expectedPoolName) || (pool.token0.symbol === expectedToken0Symbol && pool.token1.symbol === expectedToken1Symbol);
-      // });
-      //
-      // expect(pool).toBeDefined();
 
       const pool: Pool | undefined = body.pools.find((pool: Pool) => {
         return pool.poolAddress === expectedPoolAddress;
