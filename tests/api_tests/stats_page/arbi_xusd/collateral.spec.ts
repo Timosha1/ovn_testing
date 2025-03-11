@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Threshold is Acceptable difference between Total supply responses and the sum of collateral
+// Threshold is Acceptable difference between Total supply and the sum of collateral
 const threshold = 1000
 const pctThreshold = 1
 const collateralApi = 'https://backend.overnight.fi/strategy/arbitrum/xusd/collateral'
