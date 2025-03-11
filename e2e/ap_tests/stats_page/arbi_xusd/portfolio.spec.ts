@@ -5,7 +5,7 @@ const threshold = 1000
 const portfolioApi = 'https://backend.overnight.fi/strategy/arbitrum/xusd/portfolio';
 const totalSupplyApi = 'https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply'
 
-interface strategies {
+interface Strategies {
   address: string;
   explorerAddress: string;
   collateralToken: string;
@@ -18,10 +18,10 @@ interface strategies {
   timestamp: number;
 }
 
-test('Portfolio api status and array length', async ({ request }) => {
+test('Portfolio api status', async ({ request }) => {
   const responsePortfolio = await request.get(portfolioApi);
   expect(responsePortfolio.status()).toBe(200);
-  const strategies: strategies [] = await responsePortfolio.json();
+  const strategies: Strategies [] = await responsePortfolio.json();
   expect(strategies.length).toBeGreaterThan(0);
 });
 
@@ -32,12 +32,9 @@ test('Sum of strategies balance', async ({ request }) => {
   const responseSupplyBody = await responseSupply.json();
 
   const strategiesSum: number = responsePortfolioBody.reduce(
-    (sum: number, item: strategies) => sum + parseFloat(item.netAssetValue),
+    (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
     0
   );
-  console.log(strategiesSum);
-
   const difference = Math.abs(strategiesSum - responseSupplyBody);
   expect(difference).toBeLessThanOrEqual(threshold);
-  console.log(difference);
 })
