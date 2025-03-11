@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 // Threshold is Acceptable difference between Total supply responses and the sum of balances of all strategies
 const threshold = 1000
-const portfolioApi = 'https://backend.overnight.fi/strategy/base/usd+/portfolio';
-const totalSupplyApi = 'https://backend.overnight.fi/stat/base/USD+/total-supply'
+const portfolioApi = 'https://backend.overnight.fi/strategy/base/ovn+/portfolio';
+const totalSupplyApi = 'https://backend.overnight.fi/stat/base/OVN+/total-supply'
 
 interface strategies {
   address: string;
