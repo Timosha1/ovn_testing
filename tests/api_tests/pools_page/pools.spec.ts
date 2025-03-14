@@ -3,28 +3,31 @@
 // each specifying search parameters and expected pool details.
 // Using forEach, it dynamically generates individual tests for each case
 
-
-import {
-  test,
-  expect
-} from '@playwright/test';
-import {
-  Pool,
-  PoolsResponse
-} from '../types/pools';
+import {test, expect} from '@playwright/test';
 const baseUrl = 'https://aggregator.overnight.fi/pools/v2';
 
+interface Pool {
+  chainId: number;
+  chainName: string;
+  poolVersion: number;
+  poolAddress: string;
+  platform: string;
+  fee: string;
+  price: string;
+  name: string;
+  token0: Token;
+  token1: Token;
+  tickSpacing: string;
+  gauge: string;
+  tvl: string;
+}
 
-test('Generic Pools API request  sent from pools page', async ({
-                                                                     page
-                                                                   }) => {
-  await page.goto('https://app.overnight.fi/pools');
-  const apiUrl = '/pools/v2';
-  const apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl));
-  expect(apiResponse.status()).toBe(200);
-  const responseBody = await apiResponse.json();
-  expect(Object.keys(responseBody).length).toBeGreaterThan(0);
-});
+interface PoolsResponse {
+  pools: Pool[];
+  total: number;
+  page: number;
+  limit: number;
+}
 
 interface PoolTestCase {
   search: string;
@@ -36,6 +39,30 @@ interface PoolTestCase {
   expectedPoolAddress: string;
 }
 
+interface Token {
+  address: string;
+  name: string;
+  symbol: string;
+  id: string;
+  tokenId: string;
+  decimals: number;
+  image_url: string;
+  score: number;
+  price: number;
+}
+
+test('Generic Pools API request sent from pools page', async ({
+                                                                 page
+                                                               }) => {
+  await page.goto('https://app.overnight.fi/pools');
+  const apiUrl = '/pools/v2';
+  const apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl));
+  expect(apiResponse.status()).toBe(200);
+  const responseBody = await apiResponse.json();
+  expect(Object.keys(responseBody).length).toBeGreaterThan(0);
+});
+
+
 const poolTestCases: PoolTestCase[] = [{
   search: 'USDC/USD+',
   chainId: '8453',
@@ -44,7 +71,7 @@ const poolTestCases: PoolTestCase[] = [{
   expectedToken0Symbol: 'USDC',
   expectedToken1Symbol: 'USD+',
   expectedPoolAddress: '0x0c1A09d5D0445047DA3Ab4994262b22404288A3B',
-  },
+},
   {
     search: 'WETH/USD+',
     chainId: '8453',
@@ -119,8 +146,8 @@ test.describe('Проверка API пулов для разных пар', () =
                                  expectedPoolAddress
                                }) => {
     test(`Pool ${expectedPoolName} ${platform} (${expectedPoolAddress}) found in the API response  (Chain ID: ${chainId})`, async ({
-                                                                           request
-                                                                         }) => {
+                                                                                                                                     request
+                                                                                                                                   }) => {
       const queryParams = {
         search,
         chainId,

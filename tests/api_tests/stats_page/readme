@@ -1,0 +1,13 @@
+todo
+
+1. Need to parameterize tests using test.describe and test.each to avoid repetitive code. Investigate why test.descrybe didnt work last time
+2. Separate types from tests, place them in types dir and import from there. Investigate why types import didnt work last time
+3. Оказалось что тип ответа проверяется не достатчоно хорошо, нужно исправить и протестировать
+
+Covered tests:
+1. portfolio api
+- status 200
+- response corresponds to the Strategy interface
+- in the response an array of strategies is received
+- there is more than 0 strategies
+-
