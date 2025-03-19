@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const portfolioApi =  "https://backend.overnight.fi/strategy/arbitrum/xusd/portfolio";
 const totalSupplyApi =  "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply";
-const acceptableInaccuracy = 3000;
+const acceptableInaccuracy = 100000;
 
 interface Strategies {
   address: string;

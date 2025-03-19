@@ -1,0 +1,73 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Sum of collateral balance
+- Location: C:\Users\79779\WebstormProjects\study\tests\api_tests\stats_page\arbi_xusd\collateral.spec.ts:24:1
+
+# Error details
+
+```
+Error: expect(received).toBeLessThanOrEqual(expected)
+
+Expected: <= 3000
+Received:    4693.8492960003205
+    at C:\Users\79779\WebstormProjects\study\tests\api_tests\stats_page\arbi_xusd\collateral.spec.ts:34:22
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 |
+   3 | const collateralApi =  "https://backend.overnight.fi/strategy/arbitrum/xusd/collateral";
+   4 | const totalSupplyApi =  "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply";
+   5 | const acceptableInaccuracy = 3000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
+   6 | const pctAcceptableInaccuracy = 1; // Acceptable inaccuracy in collateral percentage
+   7 |
+   8 | interface Collateral {
+   9 |   name: string;
+  10 |   netAssetValue: string;
+  11 |   percentage: string;
+  12 |   timestamp: number; // тут число юникс добавить проверки
+  13 |   address: string;
+  14 |   explorerAddress: string;
+  15 | }
+  16 |
+  17 | test("Collateral Status", async ({ request }) => {
+  18 |   const response = await request.get(collateralApi);
+  19 |   expect(response.status()).toBe(200);
+  20 |   const collateral: Collateral[] = await response.json();
+  21 |   expect(collateral.length).toBeGreaterThan(0);
+  22 | });
+  23 |
+  24 | test("Sum of collateral balance", async ({ request }) => {
+  25 |   const responseCollateral = await request.get(collateralApi);
+  26 |   const collateralBody = await responseCollateral.json();
+  27 |   const responseSupply = await request.get(totalSupplyApi);
+  28 |   const responseSupplyBody = await responseSupply.json();
+  29 |   const collateralSum: number = collateralBody.reduce(
+  30 |     (sum: number, item: Collateral) => sum + parseFloat(item.netAssetValue),
+  31 |     0
+  32 |   );
+  33 |   const difference = Math.abs(collateralSum - responseSupplyBody);
+> 34 |   expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+     |                      ^ Error: expect(received).toBeLessThanOrEqual(expected)
+  35 | });
+  36 |
+  37 | test("Sum of collateral percentages", async ({ request }) => {
+  38 |   const responseCollateral = await request.get(collateralApi);
+  39 |   const collateralBody = await responseCollateral.json();
+  40 |   const collateralPct: number = collateralBody.reduce(
+  41 |     (sum: number, item: Collateral) => sum + parseFloat(item.percentage),
+  42 |     0
+  43 |   );
+  44 |   const difference = Math.abs(collateralPct - 100);
+  45 |   expect(difference).toBeLessThanOrEqual(pctAcceptableInaccuracy);
+  46 | });
+  47 |
+```

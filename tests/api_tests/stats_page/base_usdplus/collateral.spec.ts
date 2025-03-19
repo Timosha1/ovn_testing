@@ -23,6 +23,7 @@ test("Collateral Status", async ({ request }) => {
 
 test("Sum of collateral balance", async ({ request }) => {
   const responseCollateral = await request.get(collateralApi);
+  expect(responseCollateral.status()).toBe(200);
   const collateralBody = await responseCollateral.json();
   const responseSupply = await request.get(totalSupplyApi);
   const responseSupplyBody = await responseSupply.json();

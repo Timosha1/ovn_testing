@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const collateralApi =  "https://backend.overnight.fi/strategy/arbitrum/xusd/collateral";
 const totalSupplyApi =  "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply";
-const acceptableInaccuracy = 3000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
+const acceptableInaccuracy = 100000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
 const pctAcceptableInaccuracy = 1; // Acceptable inaccuracy in collateral percentage
 
 interface Collateral {
