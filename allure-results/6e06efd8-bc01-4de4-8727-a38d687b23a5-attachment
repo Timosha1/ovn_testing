@@ -1,0 +1,123 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Ovn tokens API >> Token 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376 Overnight.fi USD+ (Base) found in the API response
+- Location: C:\Users\79779\WebstormProjects\study\tests\api_tests\main_page\tokens_ovn\tokens_ovn.spec.ts:66:7
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: false
+    at C:\Users\79779\WebstormProjects\study\tests\api_tests\main_page\tokens_ovn\tokens_ovn.spec.ts:86:49
+```
+
+# Test source
+
+```ts
+   1 | import {test, expect} from '@playwright/test';
+   2 | const apiUrl = "https://aggregator.overnight.fi/tokens/ovn"
+   3 |
+   4 | interface TokensResponse {
+   5 |   chainTokenMap: ChainTokenMap;
+   6 | }
+   7 | interface ChainTokenMap {
+   8 |   [chainId: string]: ChainInfo;
+   9 | }
+  10 | interface ChainInfo {
+  11 |   tokenMap: TokenMap;
+  12 | }
+  13 | interface TokenMap {
+  14 |   [tokenAddress: string]: TokenInfo;
+  15 | }
+  16 | interface TokenInfo {
+  17 |   address: string;
+  18 |   name: string;
+  19 |   symbol: string;
+  20 |   id: string;
+  21 |   tokenId: string;
+  22 |   decimals: number;
+  23 |   image_url?: string; // поле может отсутствовать
+  24 |   score?: number;
+  25 |   price?: number;
+  26 |   chainId?: string; // Добавлено, так как встречается в некоторых объектах
+  27 |   priceOracle?: string; // Добавлено, так как встречается в некоторых объектах
+  28 | }
+  29 | interface TestCase {
+  30 |   address: string;
+  31 |   name: string;
+  32 |   symbol: string;
+  33 |   imageUrl: string;
+  34 |   score: number;
+  35 |   price: number;
+  36 | }
+  37 |
+  38 | test('Generic OVN Tokens API request sent from main page', async ({
+  39 |                                                                 page
+  40 |                                                               }) => {
+  41 |   await page.goto('https://app.overnight.fi');
+  42 |   const apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl));
+  43 |   expect(apiResponse.status()).toBe(200);
+  44 |   const responseBody = await apiResponse.json();
+  45 |   expect(Object.keys(responseBody).length).toBeGreaterThan(0);
+  46 | });
+  47 |
+  48 | const TestCases: TestCase[] = [{
+  49 |   address: "0xb79dd08ea68a908a97220c76d19a6aa9cbde4376",
+  50 |   name: "Overnight.fi USD+ (Base)",
+  51 |   symbol: "usd+",
+  52 |   imageUrl: "https://coin-images.coingecko.com/coins/images/39624/large/USD_.png?1723179227",
+  53 |   score: 50,
+  54 |   price: 0.9,
+  55 | }];
+  56 |
+  57 |   test.describe('Ovn tokens API', () => {
+  58 |     TestCases.forEach(async ({
+  59 |                                address,
+  60 |                                name,
+  61 |                                symbol,
+  62 |                                imageUrl,
+  63 |                                score,
+  64 |                                price
+  65 |                              }) => {
+  66 |       test(`Token ${address} ${name} found in the API response`, async ({
+  67 |                                                                           request
+  68 |                                                                         }) => {
+  69 |         const queryParams = {
+  70 |           address,
+  71 |           name,
+  72 |           symbol,
+  73 |           imageUrl,
+  74 |           score,
+  75 |           price,
+  76 |         };
+  77 |
+  78 |       const response = await request.get(apiUrl, {
+  79 |         params: queryParams,
+  80 |       });
+  81 |
+  82 |       expect(response.status()).toBe(200);
+  83 |       const body: TokensResponse = await response.json();
+  84 |       expect(body).toBeDefined();
+  85 |
+> 86 |       expect(Array.isArray(body.chainTokenMap)).toBe(true);
+     |                                                 ^ Error: expect(received).toBe(expected) // Object.is equality
+  87 |       expect(body.chainTokenMap.length).toBeGreaterThan(0);
+  88 |
+  89 |         const token: TokenInfo | undefined = body.chainTokenMap.find((token: TokenInfo) => {
+  90 |         return token.address === address;
+  91 |       });
+  92 |
+  93 |       expect(token).toBeDefined();
+  94 |       expect(token?.address).toBe(address);
+  95 |     });
+  96 |   });
+  97 | });
+```

@@ -6,6 +6,13 @@
 import {test, expect} from '@playwright/test';
 const baseUrl = 'https://aggregator.overnight.fi/pools/v2';
 
+interface PoolsResponse {
+  pools: Pool[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 interface Pool {
   chainId: number;
   chainName: string;
@@ -20,13 +27,6 @@ interface Pool {
   tickSpacing: string;
   gauge: string;
   tvl: string;
-}
-
-interface PoolsResponse {
-  pools: Pool[];
-  total: number;
-  page: number;
-  limit: number;
 }
 
 interface PoolTestCase {
