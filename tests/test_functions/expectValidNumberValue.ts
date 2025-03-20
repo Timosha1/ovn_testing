@@ -13,7 +13,6 @@ export async function expectValidNumberValue(valueText: string | null) {
     const numberValue = parseFloat(stringValue);
     //console.log(`Значение после преобразования: ${numberValue}`)
 
-
     expect(isNaN(numberValue)).toBe(false);
     expect(typeof numberValue).toBe('number');
     expect(numberValue).toBeGreaterThanOrEqual(0);
