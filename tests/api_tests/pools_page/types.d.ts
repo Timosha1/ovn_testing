@@ -26,8 +26,6 @@ export interface PoolTestCase {
   chainId: string;
   platform: string;
   expectedPoolName: string;
-  expectedToken0Symbol: string;
-  expectedToken1Symbol: string;
   expectedPoolAddress: string;
 }
 
