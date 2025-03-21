@@ -1,0 +1,74 @@
+[
+  {
+    chainId: 42161,
+    chainName: 'arbitrum',
+    poolVersion: 3,
+    poolAddress: '0x3dd2fdba71282083d440687cce9e4231aaac534e',
+    platform: 'Uniswap',
+    token0: {
+      address: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      name: 'Arbitrum Bridged WETH (Arbitrum One)',
+      symbol: 'weth',
+      id: 'arbitrum-bridged-weth-arbitrum-one',
+      tokenId: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      decimals: 18,
+      image_url: 'https://coin-images.coingecko.com/coins/images/39713/large/WETH.PNG?1723731496',
+      score: 92.66055045871559,
+      price: 1986.32172909172
+    },
+    token1: {
+      address: '0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
+      name: 'xUSD',
+      symbol: 'xUSD',
+      chainId: '42161',
+      id: 'arbitrum-xusd',
+      tokenId: '0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
+      decimals: 6,
+      image_url: 'https://coin-images.coingecko.com/coins/images/39630/large/xUSD_logo_200p.png?1738661628',
+      score: 80.79504587155965,
+      price: 1.0008983521301258
+    },
+    tickSpacing: '-200335',
+    gauge: '0x0000000000000000000000000000000000000000',
+    tvl: '30610.01259594917718678065956699188',
+    price: '0.0005011631281820408235162930174754746',
+    fee: '100',
+    name: 'WETH/XUSD'
+  },
+  {
+    chainId: 42161,
+    chainName: 'arbitrum',
+    poolVersion: 3,
+    poolAddress: '0x421803da50d3932caa36bd1731d36a0e2af93542',
+    platform: 'Uniswap',
+    token0: {
+      address: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      name: 'Arbitrum Bridged WETH (Arbitrum One)',
+      symbol: 'weth',
+      id: 'arbitrum-bridged-weth-arbitrum-one',
+      tokenId: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      decimals: 18,
+      image_url: 'https://coin-images.coingecko.com/coins/images/39713/large/WETH.PNG?1723731496',
+      score: 92.66055045871559,
+      price: 1986.32172909172
+    },
+    token1: {
+      address: '0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
+      name: 'xUSD',
+      symbol: 'xUSD',
+      chainId: '42161',
+      id: 'arbitrum-xusd',
+      tokenId: '0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
+      decimals: 6,
+      image_url: 'https://coin-images.coingecko.com/coins/images/39630/large/xUSD_logo_200p.png?1738661628',
+      score: 80.79504587155965,
+      price: 1.0008983521301258
+    },
+    tickSpacing: '-200351',
+    gauge: '0x0000000000000000000000000000000000000000',
+    tvl: '1048492.291790371578277628252814337',
+    price: '0.0005019809210437205501170042562239298',
+    fee: '500',
+    name: 'WETH/XUSD'
+  }
+]

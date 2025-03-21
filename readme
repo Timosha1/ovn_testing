@@ -1,0 +1,11 @@
+Run tests:
+npx playwright test
+
+Generate a report:
+allure serve allure-results
+
+Open report:
+npx allure open ./allure-report
+
+https://allurereport.org/docs/playwright/
+

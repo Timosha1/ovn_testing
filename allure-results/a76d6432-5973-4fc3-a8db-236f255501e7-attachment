@@ -1,0 +1,77 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Annualized Yield
+- Location: C:\Users\79779\WebstormProjects\study\tests\api_tests\stats_page\base_usdplus\payouts.spec.ts:40:1
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 502
+    at C:\Users\79779\WebstormProjects\study\tests\api_tests\stats_page\base_usdplus\payouts.spec.ts:42:29
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 |
+   3 | const payoutApi = "https://backend.overnight.fi/payout/base/usd+";
+   4 | const minAmountOfPayouts = 500;
+   5 | const minAnnualizedYield = 0.01;
+   6 | const maxAnnualizedYield = 50;
+   7 | const amountOfPayoutsForTest = 10;
+   8 | const maxDailyProfit = 0.001;
+   9 | const minDailyProfit = 0.000001;
+  10 |
+  11 | interface Payouts {
+  12 |   transactionHash: string;
+  13 |   payableDate: string;
+  14 |   dailyProfit: string;
+  15 |   annualizedYield: string;
+  16 |   duration: string;
+  17 |   totalUsdPlus: string;
+  18 |   totalUsdc: string;
+  19 | }
+  20 |
+  21 | test("Payouts status", async ({ request }) => {
+  22 |   const response = await request.get(payoutApi);
+  23 |   expect(response.status()).toBe(200);
+  24 |   const payouts: Payouts[] = await response.json();
+  25 |   expect(payouts.length).toBeGreaterThan(minAmountOfPayouts);
+  26 | });
+  27 |
+  28 | test("Daily profits", async ({ request }) => {
+  29 |   const response = await request.get(payoutApi);
+  30 |   expect(response.status()).toBe(200);
+  31 |   const payouts: Payouts[] = await response.json();
+  32 |   const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
+  33 |   lastPayouts.forEach((payout) => {
+  34 |     const dailyProfit = parseFloat(payout.dailyProfit);
+  35 |     expect(dailyProfit).toBeLessThanOrEqual(maxDailyProfit);
+  36 |     expect(dailyProfit).toBeGreaterThanOrEqual(minDailyProfit);
+  37 |   });
+  38 | });
+  39 |
+  40 | test("Annualized Yield", async ({ request }) => {
+  41 |   const response = await request.get(payoutApi);
+> 42 |   expect(response.status()).toBe(200);
+     |                             ^ Error: expect(received).toBe(expected) // Object.is equality
+  43 |   const payouts: Payouts[] = await response.json();
+  44 |   const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
+  45 |   lastPayouts.forEach((payout) => {
+  46 |     const annualizedYield = parseFloat(payout.annualizedYield);
+  47 |     expect(annualizedYield).toBeLessThanOrEqual(maxAnnualizedYield);
+  48 |     expect(annualizedYield).toBeGreaterThanOrEqual(minAnnualizedYield);
+  49 |   });
+  50 | });
+  51 |
+```
