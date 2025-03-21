@@ -51,9 +51,25 @@ const expectedValues: Chain[] = [
   },
 ];
 
+// этот тест рандомно падал поэтому добавлены логи на время
 test('Tvl data API request sent from main page', async ({ page }) => {
-  await page.goto('https://app.overnight.fi');
-  const apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl));
+  // логи пока убрал
+  // page.on('request', request => {
+  //   console.log(`>> Request: ${request.method()} ${request.url()}`);
+  // });
+  // page.on('response', response => {
+  //   console.log(`<< Response: ${response.status()} ${response.url()}`);
+  // });
+  //
+  // await page.goto('https://app.overnight.fi');
+
+  // тест падал и я добавил эту хрень
+  //await page.waitForLoadState('networkidle');
+
+  // Добавил более точный критерий
+  const apiResponse = await page.waitForResponse(
+    response => response.url() === apiUrl && response.request().method() === 'GET'
+  );
   expect(apiResponse.status()).toBe(200);
   const responseBody = await apiResponse.json();
   expect(Array.isArray(responseBody)).toBe(true);
