@@ -22,9 +22,9 @@ test.describe("Payouts API tests", () => {
       payouts = await response.json();
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message); // TypeScript knows error is an Error here
+        console.error(error.message);
       } else {
-        console.error("Unknown error:", error); // Handle non-Error cases
+        console.error("Unknown error:", error);
       }
     }
     expect(Array.isArray(payouts)).toBe(true);
