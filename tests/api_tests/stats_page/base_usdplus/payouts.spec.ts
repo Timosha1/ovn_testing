@@ -21,7 +21,11 @@ test.describe("Payouts API tests", () => {
     try {
       payouts = await response.json();
     } catch (error) {
-      throw new Error("Failed to parse JSON: " + error.message);
+      if (error instanceof Error) {
+        console.error(error.message); // TypeScript knows error is an Error here
+      } else {
+        console.error("Unknown error:", error); // Handle non-Error cases
+      }
     }
     expect(Array.isArray(payouts)).toBe(true);
   });

@@ -23,14 +23,14 @@ test("Collateral Status", async ({ request }) => {
 
 test("Sum of collateral balance", async ({ request }) => {
   const responseCollateral = await request.get(collateralApi);
-  const collateralBody = await responseCollateral.json();
+  const collateral = await responseCollateral.json();
   const responseSupply = await request.get(totalSupplyApi);
-  const responseSupplyBody = await responseSupply.json();
-  const collateralSum: number = collateralBody.reduce(
+  const totalSupply = await responseSupply.json();
+  const collateralSum: number = collateral.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.netAssetValue),
     0
   );
-  const difference = Math.abs(collateralSum - responseSupplyBody);
+  const difference = Math.abs(collateralSum - totalSupply);
   expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
 });
 
