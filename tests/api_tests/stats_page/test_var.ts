@@ -4,15 +4,6 @@ export const collateralApiXusd =  "https://backend.overnight.fi/strategy/arbitru
 export const collateralApiOvnplus =  "https://backend.overnight.fi/strategy/base/ovn+/collateral";
 export const collateralApiUsdplus =  "https://backend.overnight.fi/strategy/base/usd+/collateral";
 
-// Total supply
-export const totalSupplyApiXusd =  "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply";
-export const totalSupplyApiOvnplus =  "https://backend.overnight.fi/stat/base/OVN+/total-supply";
-export const totalSupplyApiUsdplus =  "https://backend.overnight.fi/stat/base/usd+/total-supply";
-
-// Portfolio
-export const portfolioApiXusd =  "https://backend.overnight.fi/strategy/arbitrum/xusd/portfolio";
-export const portfolioApiOvnplus =  "https://backend.overnight.fi/strategy/base/ovn+/portfolio";
-export const portfolioApiUsdplus =  "https://backend.overnight.fi/strategy/base/usd+/portfolio";
 
 // Inaccuracy Total supply var
 export const acceptableInaccuracy = 100000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
@@ -59,3 +50,14 @@ export const configOvnplus = {
   maxDailyProfit: maxDailyProfit,
   minDailyProfit: minDailyProfit,
 };
+
+// Portfolio config
+export const configPortfolio = {
+  portfolioUsdplus: "https://backend.overnight.fi/strategy/base/usd+/portfolio",
+  portfolioXusd: "https://backend.overnight.fi/strategy/arbitrum/xusd/portfolio",
+  portfolioOvnplus: "https://backend.overnight.fi/strategy/base/ovn+/portfolio",
+  supplyUsdplus: "https://backend.overnight.fi/stat/base/usd+/total-supply",
+  supplyXusd: "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply",
+  supplyOvnplus: "https://backend.overnight.fi/stat/base/OVN+/total-supply",
+};
+

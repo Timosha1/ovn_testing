@@ -1,0 +1,25 @@
+import { APIRequestContext } from '@playwright/test';
+
+export async function fetchAndValidateSupply(request: APIRequestContext, apiUrl: string) {
+  const response = await request.get(apiUrl);
+  if (response.status() !== 200) {
+    throw new Error(`API returned status ${response.status()}`);
+  }
+
+  let supply;
+  try {
+    supply = await response.json();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to parse JSON: ${error.message}`);
+    } else {
+      throw new Error(`Failed to parse JSON: Unknown error`);
+    }
+  }
+
+  if (isNaN(supply)) {
+    throw new Error('NaN');
+  }
+
+  return supply;
+}

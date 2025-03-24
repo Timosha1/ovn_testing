@@ -1,27 +1,28 @@
 import { test, expect } from "@playwright/test";
 import { Strategies } from '../types';
-import {
-  portfolioApiOvnplus,
-  totalSupplyApiOvnplus,
-  acceptableInaccuracy
-} from '../test_var'
+import { configPortfolio, acceptableInaccuracy} from '../test_var';
+import { fetchAndValidateStrategies } from '../../../test_functions/fetchAndValidateStrategies.ts';
+import { fetchAndValidateSupply } from '../../../test_functions/fetchNumberFromApi.ts';
 
-test("Portfolio api status and array length", async ({ request }) => {
-  const responsePortfolio = await request.get(portfolioApiOvnplus);
-  expect(responsePortfolio.status()).toBe(200);
-  const strategies: Strategies[] = await responsePortfolio.json();
-  expect(strategies.length).toBeGreaterThan(0);
-});
+test.describe("OVN+ portfolio API tests", () => {
+  let strategies: Strategies[];
+  let supply: number;
 
-test("Sum of strategies balance", async ({ request }) => {
-  const responsePortfolio = await request.get(portfolioApiOvnplus);
-  const responseSupply = await request.get(totalSupplyApiOvnplus);
-  const responsePortfolioBody = await responsePortfolio.json();
-  const responseSupplyBody = await responseSupply.json();
-  const strategiesSum: number = responsePortfolioBody.reduce(
-    (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
-    0
-  );
-  const difference = Math.abs(strategiesSum - responseSupplyBody);
-  expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+  test.beforeAll(async ({ request }) => {
+    strategies = await fetchAndValidateStrategies(request, configPortfolio.portfolioOvnplus);
+    supply =  await fetchAndValidateSupply(request, configPortfolio.supplyOvnplus);
+  });
+
+  test("Portfolio length", async () => {
+    expect(strategies.length).toBeGreaterThan(0);
+  });
+
+  test("Sum of strategies balance", async () => {
+    const strategiesSum: number = strategies.reduce(
+      (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
+      0
+    );
+    const difference = Math.abs(strategiesSum - supply);
+    expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+  });
 });
