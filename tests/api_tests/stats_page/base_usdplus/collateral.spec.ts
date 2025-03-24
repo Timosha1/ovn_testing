@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import {Collateral} from '../types';
 import {
   collateralApiUsdplus,
-  totalSupplyApiusdplus,
+  totalSupplyApiUsdplus,
   acceptableInaccuracy,
   pctAcceptableInaccuracy
 } from '../test_var'
@@ -18,7 +18,7 @@ test("Sum of collateral balance", async ({ request }) => {
   const responseCollateral = await request.get(collateralApiUsdplus);
   expect(responseCollateral.status()).toBe(200);
   const collateralBody = await responseCollateral.json();
-  const responseSupply = await request.get(totalSupplyApiusdplus);
+  const responseSupply = await request.get(totalSupplyApiUsdplus);
   const responseSupplyBody = await responseSupply.json();
   const collateralSum: number = collateralBody.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.netAssetValue),

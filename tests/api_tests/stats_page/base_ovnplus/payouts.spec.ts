@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { Payouts } from '../types';
 import { configOvnplus } from '../test_var.ts';
-import { fetchAndValidatePayouts } from '../../../test_functions/fetch_api.ts';
+import { fetchAndValidatePayouts } from '../../../test_functions/fetchAndValidatePayouts.ts';
+import { validatePayoutProperty } from '../../../test_functions/validatePayoutProperty.ts';
 
 test.describe("OVN+ Payouts API tests", () => {
   let payouts: Payouts[];
@@ -15,24 +16,22 @@ test.describe("OVN+ Payouts API tests", () => {
   });
 
   test("Daily profits", () => {
-    const lastPayouts = payouts.slice(0, configOvnplus.amountOfPayoutsForTest);
-    lastPayouts.forEach((payout) => {
-      expect(payout).toHaveProperty("dailyProfit");
-      const dailyProfit = parseFloat(payout.dailyProfit);
-      expect(isNaN(dailyProfit), "dailyProfit is not a number").toBe(false);
-      expect(dailyProfit).toBeLessThanOrEqual(configOvnplus.maxDailyProfit);
-      expect(dailyProfit).toBeGreaterThanOrEqual(configOvnplus.minDailyProfit);
-    });
+    validatePayoutProperty(
+      payouts,
+      "dailyProfit",
+      configOvnplus.minDailyProfit,
+      configOvnplus.maxDailyProfit,
+      configOvnplus.amountOfPayoutsForTest
+    );
   });
 
   test("Annualized Yield", () => {
-    const lastPayouts = payouts.slice(0, configOvnplus.amountOfPayoutsForTest);
-    lastPayouts.forEach((payout) => {
-      expect(payout).toHaveProperty("annualizedYield");
-      const annualizedYield = parseFloat(payout.annualizedYield);
-      expect(isNaN(annualizedYield), "annualizedYield is not a number").toBe(false);
-      expect(annualizedYield).toBeLessThanOrEqual(configOvnplus.maxAnnualizedYield);
-      expect(annualizedYield).toBeGreaterThanOrEqual(configOvnplus.minAnnualizedYield);
-    });
+    validatePayoutProperty(
+      payouts,
+      "annualizedYield",
+      configOvnplus.minAnnualizedYield,
+      configOvnplus.maxAnnualizedYield,
+      configOvnplus.amountOfPayoutsForTest
+    );
   });
 });
