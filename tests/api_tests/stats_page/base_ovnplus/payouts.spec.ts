@@ -1,50 +1,38 @@
 import { test, expect } from "@playwright/test";
+import { Payouts } from '../types';
+import { configOvnplus } from '../test_var.ts';
+import { fetchAndValidatePayouts } from '../../../test_functions/fetch_api.ts';
 
-const payoutApi = "https://backend.overnight.fi/payout/base/ovn+";
-const minAmountOfPayouts = 25;
-const minAnnualizedYield = 0.01;
-const maxAnnualizedYield = 100;
-const amountOfPayoutsForTest = 10;
-const maxDailyProfit = 0.002;
-const minDailyProfit = 0.000001;
+test.describe("OVN+ Payouts API tests", () => {
+  let payouts: Payouts[];
 
-interface Payouts {
-  transactionHash: string;
-  payableDate: string;
-  dailyProfit: string;
-  annualizedYield: string;
-  duration: string;
-  totalUsdPlus: string;
-  totalUsdc: string;
-}
-
-test("Payouts status", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  expect(payouts.length).toBeGreaterThan(minAmountOfPayouts);
-});
-
-test("Daily profits", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
-  lastPayouts.forEach((payout) => {
-    const dailyProfit = parseFloat(payout.dailyProfit);
-    expect(dailyProfit).toBeLessThanOrEqual(maxDailyProfit);
-    expect(dailyProfit).toBeGreaterThanOrEqual(minDailyProfit);
+  test.beforeAll(async ({ request }) => {
+    payouts = await fetchAndValidatePayouts(request, configOvnplus.payoutApi);
   });
-});
 
-test("Annualized Yield", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
-  lastPayouts.forEach((payout) => {
-    const annualizedYield = parseFloat(payout.annualizedYield);
-    expect(annualizedYield).toBeLessThanOrEqual(maxAnnualizedYield);
-    expect(annualizedYield).toBeGreaterThanOrEqual(minAnnualizedYield);
+  test("Payouts status", () => {
+    expect(payouts.length, `Expected at least ${configOvnplus.minAmountOfPayouts} payouts, got ${payouts.length}`).toBeGreaterThan(configOvnplus.minAmountOfPayouts);
+  });
+
+  test("Daily profits", () => {
+    const lastPayouts = payouts.slice(0, configOvnplus.amountOfPayoutsForTest);
+    lastPayouts.forEach((payout) => {
+      expect(payout).toHaveProperty("dailyProfit");
+      const dailyProfit = parseFloat(payout.dailyProfit);
+      expect(isNaN(dailyProfit), "dailyProfit is not a number").toBe(false);
+      expect(dailyProfit).toBeLessThanOrEqual(configOvnplus.maxDailyProfit);
+      expect(dailyProfit).toBeGreaterThanOrEqual(configOvnplus.minDailyProfit);
+    });
+  });
+
+  test("Annualized Yield", () => {
+    const lastPayouts = payouts.slice(0, configOvnplus.amountOfPayoutsForTest);
+    lastPayouts.forEach((payout) => {
+      expect(payout).toHaveProperty("annualizedYield");
+      const annualizedYield = parseFloat(payout.annualizedYield);
+      expect(isNaN(annualizedYield), "annualizedYield is not a number").toBe(false);
+      expect(annualizedYield).toBeLessThanOrEqual(configOvnplus.maxAnnualizedYield);
+      expect(annualizedYield).toBeGreaterThanOrEqual(configOvnplus.minAnnualizedYield);
+    });
   });
 });

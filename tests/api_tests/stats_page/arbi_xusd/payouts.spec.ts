@@ -1,51 +1,39 @@
 import { test, expect } from "@playwright/test";
+import { Payouts } from '../types';
+import { configXusd } from '../test_var.ts';
+import { fetchAndValidatePayouts } from '../../../test_functions/fetch_api.ts';
 
-const payoutApi = "https://backend.overnight.fi/payout/arbitrum/xusd";
-const minAmountOfPayouts = 500; // At this day there was 500+ payouts, anything less than that probably means that some of them missing
-const minAnnualizedYield = 0.01; // Min and Max Yield vary a lot, so I tried to choose smth that wont fail tests frequently
-const maxAnnualizedYield = 50;
-const amountOfPayoutsForTest = 10; // No reason to test all 500+ payouts, lets take last 10
-const maxDailyProfit = 0.001; // Daily profit also vary, I picked smth loose
-const minDailyProfit = 0.000001;
+test.describe("XUSD Payouts API tests", () => {
+  let payouts: Payouts[];
 
-interface Payouts {
-  transactionHash: string;
-  payableDate: string;
-  dailyProfit: string;
-  annualizedYield: string;
-  duration: string;
-  totalUsdPlus: string;
-  totalUsdc: string;
-}
-
-test("Payouts status", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  expect(payouts.length).toBeGreaterThan(minAmountOfPayouts);
-});
-
-test("Daily profits", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
-  lastPayouts.forEach((payout) => {
-    const dailyProfit = parseFloat(payout.dailyProfit);
-    expect(dailyProfit).toBeLessThanOrEqual(maxDailyProfit);
-    expect(dailyProfit).toBeGreaterThanOrEqual(minDailyProfit);
+  test.beforeAll(async ({ request }) => {
+    payouts = await fetchAndValidatePayouts(request, configXusd.payoutApi);
   });
-});
 
-test("Annualized Yield", async ({ request }) => {
-  const response = await request.get(payoutApi);
-  expect(response.status()).toBe(200);
-  const payouts: Payouts[] = await response.json();
-  const lastPayouts = payouts.slice(0, amountOfPayoutsForTest);
-  lastPayouts.forEach((payout) => {
-    const annualizedYield = parseFloat(payout.annualizedYield);
-    expect(annualizedYield).toBeLessThanOrEqual(maxAnnualizedYield);
-    expect(annualizedYield).toBeGreaterThanOrEqual(minAnnualizedYield);
+  test("Payouts status", () => {
+    expect(payouts.length, `Expected at least ${configXusd.minAmountOfPayouts} payouts, got ${payouts.length}`).toBeGreaterThan(configXusd.minAmountOfPayouts);
+  });
+
+  test("Daily profits", () => {
+    const lastPayouts = payouts.slice(0, configXusd.amountOfPayoutsForTest);
+    lastPayouts.forEach((payout) => {
+      expect(payout).toHaveProperty("dailyProfit");
+      const dailyProfit = parseFloat(payout.dailyProfit);
+      expect(isNaN(dailyProfit), "dailyProfit is not a number").toBe(false);
+      expect(dailyProfit).toBeLessThanOrEqual(configXusd.maxDailyProfit);
+      expect(dailyProfit).toBeGreaterThanOrEqual(configXusd.minDailyProfit);
+    });
+  });
+
+  test("Annualized Yield", () => {
+    const lastPayouts = payouts.slice(0, configXusd.amountOfPayoutsForTest);
+    lastPayouts.forEach((payout) => {
+      expect(payout).toHaveProperty("annualizedYield");
+      const annualizedYield = parseFloat(payout.annualizedYield);
+      expect(isNaN(annualizedYield), "annualizedYield is not a number").toBe(false);
+      expect(annualizedYield).toBeLessThanOrEqual(configXusd.maxAnnualizedYield);
+      expect(annualizedYield).toBeGreaterThanOrEqual(configXusd.minAnnualizedYield);
+    });
   });
 });
 

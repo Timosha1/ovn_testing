@@ -1,31 +1,24 @@
 import { test, expect } from "@playwright/test";
-
-const collateralApi =  "https://backend.overnight.fi/strategy/base/usd+/collateral";
-const totalSupplyApi =  "https://backend.overnight.fi/stat/base/usd+/total-supply";
-const acceptableInaccuracy = 1000;
-const pctAcceptableInaccuracy = 1;
-
-interface Collateral {
-  name: string;
-  netAssetValue: string;
-  percentage: string;
-  timestamp: number;
-  address: string;
-  explorerAddress: string;
-}
+import {Collateral} from '../types';
+import {
+  collateralApiUsdplus,
+  totalSupplyApiusdplus,
+  acceptableInaccuracy,
+  pctAcceptableInaccuracy
+} from '../test_var'
 
 test("Collateral Status", async ({ request }) => {
-  const response = await request.get(collateralApi);
+  const response = await request.get(collateralApiUsdplus);
   expect(response.status()).toBe(200);
   const collateral: Collateral[] = await response.json();
   expect(collateral.length).toBeGreaterThan(0);
 });
 
 test("Sum of collateral balance", async ({ request }) => {
-  const responseCollateral = await request.get(collateralApi);
+  const responseCollateral = await request.get(collateralApiUsdplus);
   expect(responseCollateral.status()).toBe(200);
   const collateralBody = await responseCollateral.json();
-  const responseSupply = await request.get(totalSupplyApi);
+  const responseSupply = await request.get(totalSupplyApiusdplus);
   const responseSupplyBody = await responseSupply.json();
   const collateralSum: number = collateralBody.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.netAssetValue),
@@ -36,7 +29,7 @@ test("Sum of collateral balance", async ({ request }) => {
 });
 
 test("Sum of collateral percentages", async ({ request }) => {
-  const responseCollateral = await request.get(collateralApi);
+  const responseCollateral = await request.get(collateralApiUsdplus);
   const collateralBody = await responseCollateral.json();
   const collateralPct: number = collateralBody.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.percentage),

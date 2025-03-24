@@ -1,30 +1,23 @@
 import { test, expect } from "@playwright/test";
-
-const collateralApi =  "https://backend.overnight.fi/strategy/arbitrum/xusd/collateral";
-const totalSupplyApi =  "https://backend.overnight.fi/stat/arbitrum/XUSD/total-supply";
-const acceptableInaccuracy = 100000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
-const pctAcceptableInaccuracy = 1; // Acceptable inaccuracy in collateral percentage
-
-interface Collateral {
-  name: string;
-  netAssetValue: string;
-  percentage: string;
-  timestamp: number; // тут число юникс добавить проверки
-  address: string;
-  explorerAddress: string;
-}
+import {Collateral} from '../types';
+import {
+  collateralApiXusd,
+  totalSupplyApiXusd,
+  acceptableInaccuracy,
+  pctAcceptableInaccuracy
+} from '../test_var'
 
 test("Collateral Status", async ({ request }) => {
-  const response = await request.get(collateralApi);
+  const response = await request.get(collateralApiXusd);
   expect(response.status()).toBe(200);
   const collateral: Collateral[] = await response.json();
   expect(collateral.length).toBeGreaterThan(0);
 });
 
 test("Sum of collateral balance", async ({ request }) => {
-  const responseCollateral = await request.get(collateralApi);
+  const responseCollateral = await request.get(collateralApiXusd);
   const collateral = await responseCollateral.json();
-  const responseSupply = await request.get(totalSupplyApi);
+  const responseSupply = await request.get(totalSupplyApiXusd);
   const totalSupply = await responseSupply.json();
   const collateralSum: number = collateral.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.netAssetValue),
@@ -35,7 +28,7 @@ test("Sum of collateral balance", async ({ request }) => {
 });
 
 test("Sum of collateral percentages", async ({ request }) => {
-  const responseCollateral = await request.get(collateralApi);
+  const responseCollateral = await request.get(collateralApiXusd);
   const collateralBody = await responseCollateral.json();
   const collateralPct: number = collateralBody.reduce(
     (sum: number, item: Collateral) => sum + parseFloat(item.percentage),

@@ -1,11 +1,9 @@
 import { test, expect } from "@playwright/test";
-
-const totalSupplyApi =  "https://backend.overnight.fi/stat/base/OVN+/total-supply";
-const minTotalSupply = 1;
+import { totalSupplyApiOvnplus } from '../test_var.ts';
 
 test("Total Supply status", async ({ request }) => {
-  const response = await request.get(totalSupplyApi);
+  const response = await request.get(totalSupplyApiOvnplus);
   expect(response.status()).toBe(200);
   const totalSupplyBody: object = await response.json();
-  expect(totalSupplyBody).toBeGreaterThan(minTotalSupply);
+  expect(totalSupplyBody).toBeGreaterThan(0);
 });

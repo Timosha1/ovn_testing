@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test';
-const apiUrl = "https://aggregator.overnight.fi/tokens/ovn"
-
+import {apiUrl} from "./test_cases.ts"
 
 test('Generic OVN Tokens API request sent from main page', async ({
                                                                     page
