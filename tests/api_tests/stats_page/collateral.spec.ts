@@ -1,12 +1,24 @@
-import { test, expect } from "@playwright/test";
-import { Collateral } from './types';
+import {
+  test,
+  expect
+} from "@playwright/test";
+import {
+  Collateral
+} from './types';
 import {
   collateralApiUsdplus,
   acceptableInaccuracy,
-  pctAcceptableInaccuracy, configPortfolio, collateralApiOvnplus, collateralApiXusd
+  pctAcceptableInaccuracy,
+  configPortfolio,
+  collateralApiOvnplus,
+  collateralApiXusd
 } from './test_configs.ts';
-import { fetchAndValidateCollateral } from './../../test_functions/fetchAndValidateCollateral.ts';
-import { fetchAndValidateSupply } from './../../test_functions/fetchAndValidateSupply.ts';
+import {
+  fetchAndValidateCollateral
+} from './../../test_functions/stats/fetchAndValidateCollateral.ts';
+import {
+  fetchAndValidateSupply
+} from './../../test_functions/stats/fetchAndValidateSupply.ts';
 
 test.describe("USD+ collateral API tests", () => {
   let collateral: Collateral[];

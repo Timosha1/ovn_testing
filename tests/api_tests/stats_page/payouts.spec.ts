@@ -1,8 +1,21 @@
-import { test, expect } from "@playwright/test";
-import { Payouts } from './types';
-import { configOvnplus, configUsdplus, configXusd } from './test_configs.ts';
-import { fetchAndValidatePayouts } from './../../test_functions/fetchAndValidatePayouts.ts';
-import { validatePayoutProperty } from './../../test_functions/validatePayoutProperty.ts';
+import {
+  test,
+  expect
+} from "@playwright/test";
+import {
+  Payouts
+} from './types';
+import {
+  configOvnplus,
+  configUsdplus,
+  configXusd
+} from './test_configs.ts';
+import {
+  fetchAndValidatePayouts
+} from './../../test_functions/stats/fetchAndValidatePayouts.ts';
+import {
+  validatePayoutProperty
+} from './../../test_functions/stats/validatePayoutProperty.ts';
 
 test.describe("USD+ Base Payouts API tests", () => {
   let payouts: Payouts[];

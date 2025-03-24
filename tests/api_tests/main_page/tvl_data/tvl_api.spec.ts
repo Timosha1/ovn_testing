@@ -7,13 +7,13 @@ test('Tvl data API request sent from main page', async ({ page }) => {
 
   page.on('request', request => {
     if (request.url().includes(apiUrl)) {
-      console.log(`>> Request: ${request.method()} ${request.url()}`);
+      console.log(`>> Tvl data Request: ${request.method()} ${request.url()}`);
     }
   });
 
   page.on('response', response => {
     if (response.url().includes(apiUrl)) {
-      console.log(`<< Response: ${response.status()} ${response.url()}`);
+      console.log(`<< Tvl data Response: ${response.status()} ${response.url()}`);
     }
   });
 

@@ -1,13 +1,17 @@
-// Playwright tests for verifying pool Pools API responses.
-// It defines test cases in the poolTestCases array,
-// each specifying search parameters and expected pool details.
-// Using forEach, it dynamically generates individual tests for each case
-
-import {test, expect} from '@playwright/test';
+import { test, expect, APIRequestContext } from '@playwright/test';
 import { Pool, PoolsResponse } from './types';
 import { poolTestCases, baseUrl} from './test_cases.ts';
 
-test.describe('Проверка API пулов', () => {
+test('Generic Pools API request sent from pools page', async ({page}) => {
+  await page.goto('https://app.overnight.fi/pools');
+  const apiUrl = '/pools/v2';
+  const apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl));
+  expect(apiResponse.status()).toBe(200);
+  const responseBody: APIRequestContext = await apiResponse.json();
+  expect(Object.keys(responseBody).length).toBeGreaterThan(0);
+});
+
+test.describe('Проверка API Pools', () => {
   for (const{
     search,
     chainId,
@@ -16,9 +20,7 @@ test.describe('Проверка API пулов', () => {
     expectedPoolAddress,
   } of poolTestCases){
 
-    test(`Test ${expectedPoolName} ${platform} in the API response (Chain ID: ${chainId})`, async ({
-                                                                                                     request
-                                                                                                   }) => {
+    test(`Test ${expectedPoolName} ${platform} in the API response (Chain ID: ${chainId})`, async ({request}) => {
       const queryParams = {
         search,
         chainId,

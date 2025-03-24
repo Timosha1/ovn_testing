@@ -4,19 +4,15 @@ export const collateralApiXusd =  "https://backend.overnight.fi/strategy/arbitru
 export const collateralApiOvnplus =  "https://backend.overnight.fi/strategy/base/ovn+/collateral";
 export const collateralApiUsdplus =  "https://backend.overnight.fi/strategy/base/usd+/collateral";
 
-
 // Inaccuracy Total supply var
 export const acceptableInaccuracy = 100000; // Acceptable difference in $ between Total supply and the Sum of all collaterals
 export const pctAcceptableInaccuracy = 1;
-
-
 
 const minAnnualizedYield = 0.01; // Min and Max Yield vary a lot, so I tried to choose smth that wont fail tests frequently
 const maxAnnualizedYield = 100;
 const amountOfPayoutsForTest = 10; // No reason to test all 500+ payouts, lets take last 10
 const maxDailyProfit = 0.002; // Daily profit also vary, I picked smth loose
 const minDailyProfit = 0.000001;
-
 
 // USD+ payouts config
 export const configUsdplus = {

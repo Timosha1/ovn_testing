@@ -1,6 +1,13 @@
-import { test, expect } from "@playwright/test";
-import { configPortfolio } from './test_configs.ts';
-import { fetchAndValidateSupply } from '../../test_functions/fetchAndValidateSupply.ts';
+import {
+  test,
+  expect
+} from "@playwright/test";
+import {
+  configPortfolio
+} from './test_configs.ts';
+import {
+  fetchAndValidateSupply
+} from '../../test_functions/stats/fetchAndValidateSupply.ts';
 
 test.describe("Supply API tests", () => {
   let usdPlus: number;

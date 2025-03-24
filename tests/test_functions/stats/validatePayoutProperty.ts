@@ -1,4 +1,4 @@
-import { Payouts } from '../api_tests/stats_page/types';
+import { Payouts } from '../../api_tests/stats_page/types';
 import { expect } from "@playwright/test";
 
 export function validatePayoutProperty(
