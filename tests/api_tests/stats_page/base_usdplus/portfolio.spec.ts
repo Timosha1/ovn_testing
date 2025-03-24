@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { Strategies } from '../types';
 import { configPortfolio, acceptableInaccuracy} from '../test_var';
 import { fetchAndValidateStrategies } from '../../../test_functions/fetchAndValidateStrategies.ts';
-import { fetchAndValidateSupply } from '../../../test_functions/fetchNumberFromApi.ts';
+import { fetchAndValidateSupply } from '../../../test_functions/fetchAndValidateSupply.ts';
 
 test.describe("USD+ Base portfolio API tests", () => {
   let strategies: Strategies[];
