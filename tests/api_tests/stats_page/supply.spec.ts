@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { configPortfolio } from './test_var.ts';
+import { configPortfolio } from './test_configs.ts';
 import { fetchAndValidateSupply } from '../../test_functions/fetchAndValidateSupply.ts';
 
 test.describe("Supply API tests", () => {

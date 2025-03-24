@@ -4,7 +4,7 @@ import {
   collateralApiUsdplus,
   acceptableInaccuracy,
   pctAcceptableInaccuracy, configPortfolio, collateralApiOvnplus, collateralApiXusd
-} from './test_var';
+} from './test_configs.ts';
 import { fetchAndValidateCollateral } from './../../test_functions/fetchAndValidateCollateral.ts';
 import { fetchAndValidateSupply } from './../../test_functions/fetchAndValidateSupply.ts';
 
