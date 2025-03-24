@@ -94,7 +94,7 @@ test.describe('Проверка API пулов', () => {
       expect(body, 'Ответ API должен быть объектом').toBeDefined();
       expect(Array.isArray(body.pools), 'body.pools должен быть массивом').toBe(true);
       expect(body.pools.length, 'В ответе должен быть хотя бы один пул').toBeGreaterThan(0)
-      console.log(body.pools)
+      //console.log(body.pools)
 
       const pool: Pool | undefined = body.pools.find((pool: Pool) => {
         return pool.poolAddress === expectedPoolAddress;

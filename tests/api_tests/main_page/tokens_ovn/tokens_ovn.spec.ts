@@ -106,7 +106,7 @@ test.describe('Ovn tokens API', () => {
       expect(token?.address.toLowerCase()).toBe(address.toLowerCase());
       expect(token?.name).toBe(name);
 
-      console.log(`Токен ${name} найден на сети ${chainId}`);
+      //console.log(`Токен ${name} найден на сети ${chainId}`);
     });
   });
 });

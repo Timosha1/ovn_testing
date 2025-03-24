@@ -1,16 +1,7 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
+import { Chain } from './types';
 
 const apiUrl = 'https://backend.overnight.fi/stat/tvl-data';
-
-interface Value {
-  name: string;
-  value: number;
-}
-
-interface Chain {
-  chainName: string;
-  values: Value[];
-}
 
 const expectedValues: Chain[] = [
   {
@@ -53,17 +44,22 @@ const expectedValues: Chain[] = [
 
 // этот тест рандомно падал поэтому добавлены логи на время
 test('Tvl data API request sent from main page', async ({ page }) => {
-  // логи пока убрал
-  // page.on('request', request => {
-  //   console.log(`>> Request: ${request.method()} ${request.url()}`);
-  // });
-  // page.on('response', response => {
-  //   console.log(`<< Response: ${response.status()} ${response.url()}`);
-  // });
-  //
-  // await page.goto('https://app.overnight.fi');
 
-  // тест падал и я добавил эту хрень
+  page.on('request', request => {
+    if (request.url().includes(apiUrl)) {
+      console.log(`>> Request: ${request.method()} ${request.url()}`);
+    }
+  });
+
+  page.on('response', response => {
+    if (response.url().includes(apiUrl)) {
+      console.log(`<< Response: ${response.status()} ${response.url()}`);
+    }
+  });
+
+  await page.goto('https://app.overnight.fi');
+
+  // тест падал и я добавил ожидание
   //await page.waitForLoadState('networkidle');
 
   // Добавил более точный критерий
