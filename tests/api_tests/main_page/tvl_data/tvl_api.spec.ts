@@ -2,7 +2,10 @@ import { test, expect, APIRequestContext } from '@playwright/test';
 import { Chain } from './types';
 import {expectedValues, apiUrl} from './expectedValues.ts';
 
-// этот тест рандомно падал поэтому добавлены логи на время
+test.beforeEach('Tvl API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
+
 test('Tvl data API request sent from main page', async ({ page }) => {
 
   page.on('request', request => {
@@ -10,7 +13,6 @@ test('Tvl data API request sent from main page', async ({ page }) => {
       console.log(`>> Tvl data Request: ${request.method()} ${request.url()}`);
     }
   });
-
   page.on('response', response => {
     if (response.url().includes(apiUrl)) {
       console.log(`<< Tvl data Response: ${response.status()} ${response.url()}`);
@@ -18,7 +20,6 @@ test('Tvl data API request sent from main page', async ({ page }) => {
   });
 
   await page.goto('https://app.overnight.fi');
-
   //await page.waitForLoadState('networkidle');
 
   const apiResponse = await page.waitForResponse(

@@ -14,18 +14,22 @@ import {
   collateralApiXusd
 } from './test_configs.ts';
 import {
-  fetchAndValidateCollateral
-} from './../../test_functions/stats/fetchAndValidateCollateral.ts';
+  fetchAndValidateResponse
+} from '../../test_functions/stats/fetchAndValidateResponse.ts';
 import {
   fetchAndValidateSupply
 } from './../../test_functions/stats/fetchAndValidateSupply.ts';
+
+test.beforeEach('Collateral API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
 
 test.describe("USD+ collateral API tests", () => {
   let collateral: Collateral[];
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    collateral = await fetchAndValidateCollateral(request, collateralApiUsdplus);
+    collateral = await fetchAndValidateResponse(request, collateralApiUsdplus);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyUsdplus);
   });
 
@@ -57,7 +61,7 @@ test.describe("XUSD collateral API tests", () => {
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    collateral = await fetchAndValidateCollateral(request, collateralApiXusd);
+    collateral = await fetchAndValidateResponse(request, collateralApiXusd);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyXusd);
   });
 
@@ -89,7 +93,7 @@ test.describe("OVN+ collateral API tests", () => {
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    collateral = await fetchAndValidateCollateral(request, collateralApiOvnplus);
+    collateral = await fetchAndValidateResponse(request, collateralApiOvnplus);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyOvnplus);
   });
 

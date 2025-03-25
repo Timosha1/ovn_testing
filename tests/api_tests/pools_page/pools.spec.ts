@@ -2,6 +2,10 @@ import { test, expect, APIRequestContext } from '@playwright/test';
 import { Pool, PoolsResponse } from './types';
 import { poolTestCases, baseUrl} from './test_cases.ts';
 
+test.beforeEach('Payouts API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
+
 test('Generic Pools API request sent from pools page', async ({page}) => {
   await page.goto('https://app.overnight.fi/pools');
   const apiUrl = '/pools/v2';
@@ -11,7 +15,7 @@ test('Generic Pools API request sent from pools page', async ({page}) => {
   expect(Object.keys(responseBody).length).toBeGreaterThan(0);
 });
 
-test.describe('Проверка API Pools', () => {
+test.describe('API Pools Check', () => {
   for (const{
     search,
     chainId,
@@ -35,16 +39,16 @@ test.describe('Проверка API Pools', () => {
       expect(response.status()).toBe(200);
 
       const body: PoolsResponse = await response.json();
-      expect(body, 'Ответ API должен быть объектом').toBeDefined();
-      expect(Array.isArray(body.pools), 'body.pools должен быть массивом').toBe(true);
-      expect(body.pools.length, 'В ответе должен быть хотя бы один пул').toBeGreaterThan(0)
+      expect(body, 'The API response should be an object').toBeDefined();
+      expect(Array.isArray(body.pools), 'body.pools should be an array').toBe(true);
+      expect(body.pools.length, 'The response should contain at least one pool').toBeGreaterThan(0)
       //console.log(body.pools)
 
       const pool: Pool | undefined = body.pools.find((pool: Pool) => {
         return pool.poolAddress === expectedPoolAddress;
       });
 
-      expect(pool, `Пул ${expectedPoolAddress} не найден в ответе API`).toBeDefined();
+      expect(pool, `Pool ${expectedPoolAddress} not found in the API response`).toBeDefined();
       expect(pool?.poolAddress).toBe(expectedPoolAddress);
     });
   }

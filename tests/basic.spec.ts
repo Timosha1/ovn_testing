@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 const mainPageUrl = "https://app.overnight.fi";
 
-test('landing page has title', async ({ page }) => {
+test('Landing page has title', async ({ page }) => {
   await page.goto('https://overnight.fi');
   await expect(page).toHaveTitle(/Overnight/);
 });

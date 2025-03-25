@@ -11,17 +11,21 @@ import {
   configXusd
 } from './test_configs.ts';
 import {
-  fetchAndValidatePayouts
-} from './../../test_functions/stats/fetchAndValidatePayouts.ts';
+  fetchAndValidateResponse
+} from './../../test_functions/stats/fetchAndValidateResponse.ts';
 import {
   validatePayoutProperty
 } from './../../test_functions/stats/validatePayoutProperty.ts';
+
+test.beforeEach('Payouts API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
 
 test.describe("USD+ Base Payouts API tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
-    payouts = await fetchAndValidatePayouts(request, configUsdplus.payoutApi);
+    payouts = await fetchAndValidateResponse(request, configUsdplus.payoutApi);
   });
 
   test("Payouts status", () => {
@@ -53,7 +57,7 @@ test.describe("XUSD Payouts API tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
-    payouts = await fetchAndValidatePayouts(request, configXusd.payoutApi);
+    payouts = await fetchAndValidateResponse(request, configXusd.payoutApi);
   });
 
   test("Payouts status", () => {
@@ -85,7 +89,7 @@ test.describe("OVN+ Payouts API tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
-    payouts = await fetchAndValidatePayouts(request, configOvnplus.payoutApi);
+    payouts = await fetchAndValidateResponse(request, configOvnplus.payoutApi);
   });
 
   test("Payouts status", () => {

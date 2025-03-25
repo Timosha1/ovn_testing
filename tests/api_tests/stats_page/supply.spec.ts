@@ -9,6 +9,10 @@ import {
   fetchAndValidateSupply
 } from '../../test_functions/stats/fetchAndValidateSupply.ts';
 
+test.beforeEach('Supply API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
+
 test.describe("Supply API tests", () => {
   let usdPlus: number;
   let xusd: number;

@@ -10,18 +10,22 @@ import {
   acceptableInaccuracy
 } from './test_configs.ts';
 import {
-  fetchAndValidateStrategies
-} from './../../test_functions/stats/fetchAndValidateStrategies.ts';
+  fetchAndValidateResponse
+} from './../../test_functions/stats/fetchAndValidateResponse.ts';
 import {
   fetchAndValidateSupply
 } from './../../test_functions/stats/fetchAndValidateSupply.ts';
+
+test.beforeEach('Portfolio API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
 
 test.describe("USD+ Base portfolio API tests", () => {
   let strategies: Strategies[];
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    strategies = await fetchAndValidateStrategies(request, configPortfolio.portfolioUsdplus);
+    strategies = await fetchAndValidateResponse(request, configPortfolio.portfolioUsdplus);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyUsdplus);
   });
 
@@ -44,7 +48,7 @@ test.describe("XUSD portfolio API tests", () => {
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    strategies = await fetchAndValidateStrategies(request, configPortfolio.portfolioXusd);
+    strategies = await fetchAndValidateResponse(request, configPortfolio.portfolioXusd);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyXusd);
   });
 
@@ -67,7 +71,7 @@ test.describe("OVN+ portfolio API tests", () => {
   let supply: number;
 
   test.beforeAll(async ({ request }) => {
-    strategies = await fetchAndValidateStrategies(request, configPortfolio.portfolioOvnplus);
+    strategies = await fetchAndValidateResponse(request, configPortfolio.portfolioOvnplus);
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyOvnplus);
   });
 
