@@ -1,72 +1,27 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
+import { Chain } from './types';
+import {expectedValues, apiUrl} from './expectedValues.ts';
 
-const apiUrl = 'https://backend.overnight.fi/stat/tvl-data';
+test.beforeEach('Tvl API', async () => {
+  console.log(`Running ${test.info().title}`);
+});
 
-interface Value {
-  name: string;
-  value: number;
-}
-
-interface Chain {
-  chainName: string;
-  values: Value[];
-}
-
-const expectedValues: Chain[] = [
-  {
-    chainName: 'arbitrum',
-    values: [
-      { name: 'xUSD', value: 2306867.820887 },
-      { name: 'DAI+', value: 8874.207446270242 },
-      { name: 'ETH+', value: 2.0904261398051234 },
-      { name: 'USDT+', value: 721301.153282 },
-    ],
-  },
-  {
-    chainName: 'base',
-    values: [
-      { name: 'USD+', value: 8955619.076011 },
-      { name: 'DAI+', value: 20174.015077003485 },
-      { name: 'USDC+', value: 121711.783733 },
-      { name: 'OVN+', value: 331389.13628412556 },
-    ],
-  },
-  {
-    chainName: 'blast',
-    values: [
-      { name: 'USD+', value: 9401819.685859567 },
-      { name: 'USDC+', value: 826.1509537965514 },
-    ],
-  },
-  {
-    chainName: 'optimism',
-    values: [
-      { name: 'USD+', value: 89971.408788 },
-      { name: 'DAI+', value: 4084.9125016824387 },
-    ],
-  },
-  {
-    chainName: 'sonic',
-    values: [{ name: 'USD+', value: 9.937924 }],
-  },
-];
-
-// этот тест рандомно падал поэтому добавлены логи на время
 test('Tvl data API request sent from main page', async ({ page }) => {
-  // логи пока убрал
-  // page.on('request', request => {
-  //   console.log(`>> Request: ${request.method()} ${request.url()}`);
-  // });
-  // page.on('response', response => {
-  //   console.log(`<< Response: ${response.status()} ${response.url()}`);
-  // });
-  //
-  // await page.goto('https://app.overnight.fi');
 
-  // тест падал и я добавил эту хрень
+  page.on('request', request => {
+    if (request.url().includes(apiUrl)) {
+      console.log(`>> Tvl data Request: ${request.method()} ${request.url()}`);
+    }
+  });
+  page.on('response', response => {
+    if (response.url().includes(apiUrl)) {
+      console.log(`<< Tvl data Response: ${response.status()} ${response.url()}`);
+    }
+  });
+
+  await page.goto('https://app.overnight.fi');
   //await page.waitForLoadState('networkidle');
 
-  // Добавил более точный критерий
   const apiResponse = await page.waitForResponse(
     response => response.url() === apiUrl && response.request().method() === 'GET'
   );
