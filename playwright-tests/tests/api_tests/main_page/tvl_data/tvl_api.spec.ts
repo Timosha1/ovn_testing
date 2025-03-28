@@ -1,6 +1,6 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
 import { Chain } from './types';
-import {expectedValues, apiUrl} from './expectedValues.ts';
+import {expectedValues, apiUrl} from './expectedValues';
 
 test.beforeEach('Tvl API', async () => {
   console.log(`Running ${test.info().title}`);

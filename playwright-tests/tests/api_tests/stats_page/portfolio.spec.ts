@@ -8,13 +8,13 @@ import {
 import {
   configPortfolio,
   acceptableInaccuracy
-} from './test_configs.ts';
+} from './test_configs';
 import {
   fetchAndValidateResponse
-} from './../../test_functions/stats/fetchAndValidateResponse.ts';
+} from './../../test_functions/stats/fetchAndValidateResponse';
 import {
   fetchAndValidateSupply
-} from './../../test_functions/stats/fetchAndValidateSupply.ts';
+} from './../../test_functions/stats/fetchAndValidateSupply';
 
 test.beforeEach('Portfolio API', async () => {
   console.log(`Running ${test.info().title}`);

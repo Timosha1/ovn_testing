@@ -9,13 +9,13 @@ import {
   configOvnplus,
   configUsdplus,
   configXusd
-} from './test_configs.ts';
+} from './test_configs';
 import {
   fetchAndValidateResponse
-} from './../../test_functions/stats/fetchAndValidateResponse.ts';
+} from './../../test_functions/stats/fetchAndValidateResponse';
 import {
   validatePayoutProperty
-} from './../../test_functions/stats/validatePayoutProperty.ts';
+} from './../../test_functions/stats/validatePayoutProperty';
 
 test.beforeEach('Payouts API', async () => {
   console.log(`Running ${test.info().title}`);
