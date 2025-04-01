@@ -1,5 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const env = process.env.TEST_ENV || 'dev';
+
+const environments = {
+  dev: {
+    baseURL: 'https://dev.app.overnight.fi',
+  },
+  prod: {
+    baseURL: 'https://app.overnight.fi',
+  },
+};
+
 export default defineConfig({
   testDir: './playwright-tests/tests',
   timeout: 30000,
@@ -12,7 +23,7 @@ export default defineConfig({
     ['./playwright-tests/global-teardown.ts']
   ],
   use: {
-    baseURL: 'https://app.overnight.fi',
+    ...environments[env as keyof typeof environments],
     trace: 'on-first-retry',
   },
   projects: [

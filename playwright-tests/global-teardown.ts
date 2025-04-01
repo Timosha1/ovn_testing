@@ -31,7 +31,7 @@ class MyReporter implements Reporter {
   }
 
   async onEnd(result: FullResult) {
-    const exporterUrl = process.env.EXPORTER_URL || 'http://localhost:9100'; // Используем переменную окружения EXPORTER_URL
+    const exporterUrl = process.env.EXPORTER_URL || 'http://localhost:9100';
 
     console.log('Full test run result:', result);
     try {
