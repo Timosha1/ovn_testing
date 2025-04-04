@@ -20,7 +20,6 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [
     ['list'],
-    ['./playwright-tests/global-teardown.ts']
   ],
   use: {
     ...environments[env as keyof typeof environments],
