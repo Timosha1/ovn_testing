@@ -11,7 +11,7 @@ test('Main app page status 200', async ({ page }) => {
   expect(response!.status()).toBe(200);
 });
 
-// текст не наодится, надо поправить
+// broken test, fix needed
 test.skip('main app page has Mint/redeem tab visible', async ({ page }) => {
   await page.goto(mainPageUrl);
   await page.getByRole('button', { name: 'Launch Dapp' }).click();

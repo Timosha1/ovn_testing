@@ -8,7 +8,7 @@ import {
   tokensBase,
   apiUrlTokensOvn,
   TestCases
-} from './test_cases.ts';
+} from './test_cases';
 import { TokenInfo, TokensResponse } from './types';
 
 test.beforeEach('Tokens API', async () => {

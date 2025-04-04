@@ -1,6 +1,6 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
 import { Pool, PoolsResponse } from './types';
-import { poolTestCases, baseUrl} from './test_cases.ts';
+import { poolTestCases, baseUrl} from './test_cases';
 
 test.beforeEach('Payouts API', async () => {
   console.log(`Running ${test.info().title}`);

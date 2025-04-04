@@ -4,10 +4,10 @@ import {
 } from "@playwright/test";
 import {
   configPortfolio
-} from './test_configs.ts';
+} from './test_configs';
 import {
   fetchAndValidateSupply
-} from '../../test_functions/stats/fetchAndValidateSupply.ts';
+} from '../../test_functions/stats/fetchAndValidateSupply';
 
 test.beforeEach('Supply API', async () => {
   console.log(`Running ${test.info().title}`);

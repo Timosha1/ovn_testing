@@ -9,9 +9,10 @@ lerna-debug.log*
 
 # Allure
 allure-results/
+allure-report/
 
-node_modules
-dist
+node_modules/
+dist/
 dist-ssr
 *.local
 
