@@ -4,7 +4,7 @@ import {expectedValues, apiUrlTvlData } from './expectedValues';
 
 let cachedChainValues: Chain[];
 
-test.describe('Check tvl data', () => {
+test.describe('TVL API', () => {
   test.beforeAll(async ({ request }) => {
     console.log('Fetching TVL data...');
     const response = await request.get(apiUrlTvlData);

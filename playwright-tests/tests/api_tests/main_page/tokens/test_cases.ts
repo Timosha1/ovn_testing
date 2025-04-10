@@ -1,6 +1,5 @@
 export const apiUrlBase = 'https://aggregator.overnight.fi/tokens/8453?search=&limit=100';
 export const apiUrlArbi = 'https://aggregator.overnight.fi/tokens/42161?search=&limit=100';
-export const apiUrlTokens = 'https://aggregator.overnight.fi/tokens'
 export const apiUrlTokensOvn = "https://aggregator.overnight.fi/tokens/ovn";
 
 

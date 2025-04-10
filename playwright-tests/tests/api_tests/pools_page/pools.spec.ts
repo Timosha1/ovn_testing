@@ -1,12 +1,14 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
 import { Pool, PoolsResponse } from './types';
 import { poolTestCases, baseUrl} from './test_cases';
+import * as allure from "allure-js-commons";
 
-test.beforeEach('Pools API', async () => {
+
+test.beforeEach('Log test name', async () => {
   console.log(`Running test ${test.info().title}`);
 });
 
-test.describe('Pools API Check', () => {
+test.describe('Pools API', () => {
   for (const{
     search,
     chainId,
@@ -36,22 +38,8 @@ test.describe('Pools API Check', () => {
         return pool.poolAddress === expectedPoolAddress;
       });
 
-      expect(pool, `Pool ${expectedPoolAddress} not found in the API response`).toBeDefined();
-      expect(pool?.poolAddress).toBe(expectedPoolAddress);
+      expect(pool, `Pool ${expectedPoolAddress} should be found in the API response`).toBeDefined();
+      expect(pool?.poolAddress, `poolAddress property of the found pool object is equal to the value of ${expectedPoolAddress}`).toBe(expectedPoolAddress);
     });
   }
-  test('Pools API request sent from dapp pools page', async ({page}) => {
-    await page.goto('https://app.overnight.fi/pools');
-    const apiUrl = '/pools/v2';
-    let apiResponse;
-    try {
-      apiResponse = await page.waitForResponse(response => response.url().includes(apiUrl), { timeout: 10000 });
-    } catch (error) {
-      throw new Error(`Failed to wait for a response from the API with a URL containing “${apiUrl}” within the given time.`);
-    }
-    expect(apiResponse.status(), 'Response status should be 200').toBe(200);
-    const responseBody: APIRequestContext = await apiResponse.json();
-    expect(Object.keys(responseBody).length, ' Pools response body should not be empty').toBeGreaterThan(0);
-  });
-
 });

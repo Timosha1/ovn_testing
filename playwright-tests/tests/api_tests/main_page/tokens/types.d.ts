@@ -1,15 +1,23 @@
-export interface TokensResponse {
-  chainTokenMap: ChainTokenMap;
+export type TokensResponse =
+  | {
+  tokenMap: TokenMap; // Структура для apiUrlArbi и apiUrlBase
 }
+  | {
+  chainTokenMap: ChainTokenMap; // Структура для apiUrlTokensOvn
+};
+
 export interface ChainTokenMap {
   [chainId: string]: ChainInfo;
 }
+
 export interface ChainInfo {
   tokenMap: TokenMap;
 }
+
 export interface TokenMap {
   [tokenAddress: string]: TokenInfo;
 }
+
 export interface TokenInfo {
   address: string;
   name: string;

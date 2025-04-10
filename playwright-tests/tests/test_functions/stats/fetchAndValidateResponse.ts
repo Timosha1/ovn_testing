@@ -1,5 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 
+// Эта функция отправляет запрос к API, убеждается, что запрос успешен, пытается прочитать и понять ответ как JSON, проверяет, что ответ является массивом, и возвращает этот массив. Если на каком-либо этапе происходит ошибка, функция сообщает об этом, выбрасывая исключение.
 export async function fetchAndValidateResponse(request: APIRequestContext, apiUrl: string) {
   const response = await request.get(apiUrl);
   if (response.status() !== 200) {

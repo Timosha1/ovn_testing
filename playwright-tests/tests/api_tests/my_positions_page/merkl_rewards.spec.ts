@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/test';
 const apiUrlArbi = "https://api.merkl.xyz/v3/userRewards?chainId=42161&user=0x523be0bbbfa2221e015dbb4f8ecd0ac69d12eabc&proof=true";
 const apiUrlBase = "https://api.merkl.xyz/v3/userRewards?chainId=8453&user=0x523be0bbbfa2221e015dbb4f8ecd0ac69d12eabc&proof=true";
 
-test.beforeEach('Merkl API', async () => {
+test.beforeEach('Log test name', async () => {
   console.log(`Running ${test.info().title}`);
 });
 
-test.describe('Generic Merkl API request test', () => {
+test.describe('Simple Merkl API request test', () => {
 
   test('Arbi api', async ({ request }) => {
     const responseArbi = await request.get(apiUrlArbi);

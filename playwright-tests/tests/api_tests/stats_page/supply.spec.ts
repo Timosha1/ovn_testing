@@ -9,11 +9,11 @@ import {
   fetchAndValidateSupply
 } from '../../test_functions/stats/fetchAndValidateSupply';
 
-test.beforeEach('Supply API', async () => {
+test.beforeEach('Log test name', async () => {
   console.log(`Running ${test.info().title}`);
 });
 
-test.describe("Supply API tests", () => {
+test.describe("Supply API", () => {
   let usdPlus: number;
   let xusd: number;
   let ovnPlus: number;
@@ -25,14 +25,14 @@ test.describe("Supply API tests", () => {
   });
 
   test("USD+ Supply", async () => {
-    expect(usdPlus).toBeGreaterThan(0)
+    expect(usdPlus, 'Supply should be greater than 0').toBeGreaterThan(0)
   });
 
   test("XUSD Supply", async () => {
-    expect(xusd).toBeGreaterThan(0)
+    expect(xusd, 'Supply should be greater than 0').toBeGreaterThan(0)
   });
 
   test("OVN+ Supply", async () => {
-    expect(ovnPlus).toBeGreaterThan(0)
+    expect(ovnPlus, 'Supply should be greater than 0').toBeGreaterThan(0)
   });
 });

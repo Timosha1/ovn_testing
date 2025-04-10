@@ -12,27 +12,29 @@ import {
 } from './test_configs';
 import {
   fetchAndValidateResponse
-} from './../../test_functions/stats/fetchAndValidateResponse';
+} from '../../test_functions/stats/fetchAndValidateResponse';
 import {
   validatePayoutProperty
-} from './../../test_functions/stats/validatePayoutProperty';
+} from '../../test_functions/stats/validatePayoutProperty';
+import * as allure from "allure-js-commons";
 
-test.beforeEach('Payouts API', async () => {
+test.beforeEach('Log test name', async () => {
+  await allure.suite("Payouts API");
   console.log(`Running ${test.info().title}`);
 });
 
-test.describe("USD+ Base Payouts API tests", () => {
+test.describe("USD+ Base payouts tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
     payouts = await fetchAndValidateResponse(request, configUsdplus.payoutApi);
   });
 
-  test("Payouts status", () => {
+  test("USD+ Base payouts status", () => {
     expect(payouts.length, `Expected at least ${configUsdplus.minAmountOfPayouts} payouts, got ${payouts.length}`).toBeGreaterThan(configUsdplus.minAmountOfPayouts);
   });
 
-  test("Daily profits", () => {
+  test("USD+ Base daily profits", () => {
     validatePayoutProperty(
       payouts,
       "dailyProfit",
@@ -42,7 +44,7 @@ test.describe("USD+ Base Payouts API tests", () => {
     );
   });
 
-  test("Annualized Yield", () => {
+  test("USD+ Base annualized Yield", () => {
     validatePayoutProperty(
       payouts,
       "annualizedYield",
@@ -53,18 +55,18 @@ test.describe("USD+ Base Payouts API tests", () => {
   });
 });
 
-test.describe("XUSD Payouts API tests", () => {
+test.describe("XUSD payouts tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
     payouts = await fetchAndValidateResponse(request, configXusd.payoutApi);
   });
 
-  test("Payouts status", () => {
+  test("XUSD payouts status", () => {
     expect(payouts.length, `Expected at least ${configXusd.minAmountOfPayouts} payouts, got ${payouts.length}`).toBeGreaterThan(configXusd.minAmountOfPayouts);
   });
 
-  test("Daily profits", () => {
+  test("XUSD daily profits", () => {
     validatePayoutProperty(
       payouts,
       "dailyProfit",
@@ -74,7 +76,7 @@ test.describe("XUSD Payouts API tests", () => {
     );
   });
 
-  test("Annualized Yield", () => {
+  test("XUSD annualized Yield", () => {
     validatePayoutProperty(
       payouts,
       "annualizedYield",
@@ -85,18 +87,18 @@ test.describe("XUSD Payouts API tests", () => {
   });
 });
 
-test.describe("OVN+ Payouts API tests", () => {
+test.describe("OVN+ payouts tests", () => {
   let payouts: Payouts[];
 
   test.beforeAll(async ({ request }) => {
     payouts = await fetchAndValidateResponse(request, configOvnplus.payoutApi);
   });
 
-  test("Payouts status", () => {
+  test("OVN+ payouts status", () => {
     expect(payouts.length, `Expected at least ${configOvnplus.minAmountOfPayouts} payouts, got ${payouts.length}`).toBeGreaterThan(configOvnplus.minAmountOfPayouts);
   });
 
-  test("Daily profits", () => {
+  test("OVN+ daily profits", () => {
     validatePayoutProperty(
       payouts,
       "dailyProfit",
@@ -106,7 +108,7 @@ test.describe("OVN+ Payouts API tests", () => {
     );
   });
 
-  test("Annualized Yield", () => {
+  test("OVN+ annualized Yield", () => {
     validatePayoutProperty(
       payouts,
       "annualizedYield",

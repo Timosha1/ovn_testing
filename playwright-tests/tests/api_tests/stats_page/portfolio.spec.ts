@@ -15,12 +15,14 @@ import {
 import {
   fetchAndValidateSupply
 } from './../../test_functions/stats/fetchAndValidateSupply';
+import * as allure from 'allure-js-commons';
 
-test.beforeEach('Portfolio API', async () => {
+test.beforeEach('Log test name', async () => {
+  await allure.suite("Portfolio API");
   console.log(`Running ${test.info().title}`);
 });
 
-test.describe("USD+ Base portfolio API tests", () => {
+test.describe("USD+ Base portfolio", () => {
   let strategies: Strategies[];
   let supply: number;
 
@@ -29,21 +31,21 @@ test.describe("USD+ Base portfolio API tests", () => {
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyUsdplus);
   });
 
-  test("Portfolio length", async () => {
-    expect(strategies.length).toBeGreaterThan(0);
+  test("USD+ Base Portfolio length", async () => {
+    expect(strategies.length, 'Portfolio length should be greater than 0').toBeGreaterThan(0);
   });
 
-  test("Sum of strategies balance", async () => {
+  test("USD+ Base Sum of strategies balance", async () => {
     const strategiesSum: number = strategies.reduce(
       (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
       0
     );
     const difference = Math.abs(strategiesSum - supply);
-    expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+    expect(difference, `strategiesSum - total supply should be less than ${acceptableInaccuracy}`).toBeLessThanOrEqual(acceptableInaccuracy);
   });
 });
 
-test.describe("XUSD portfolio API tests", () => {
+test.describe("XUSD portfolio", () => {
   let strategies: Strategies[];
   let supply: number;
 
@@ -52,21 +54,21 @@ test.describe("XUSD portfolio API tests", () => {
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyXusd);
   });
 
-  test("Portfolio length", async () => {
-    expect(strategies.length).toBeGreaterThan(0);
+  test("XUSD Portfolio length", async () => {
+    expect(strategies.length, 'Portfolio length should be greater than 0').toBeGreaterThan(0);
   });
 
-  test("Sum of strategies balance", async () => {
+  test("XUSD Sum of strategies balance", async () => {
     const strategiesSum: number = strategies.reduce(
       (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
       0
     );
     const difference = Math.abs(strategiesSum - supply);
-    expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+    expect(difference, `strategiesSum - total supply should be less than ${acceptableInaccuracy}`).toBeLessThanOrEqual(acceptableInaccuracy);
   });
 });
 
-test.describe("OVN+ portfolio API tests", () => {
+test.describe("OVN+ portfolio", () => {
   let strategies: Strategies[];
   let supply: number;
 
@@ -75,17 +77,17 @@ test.describe("OVN+ portfolio API tests", () => {
     supply =  await fetchAndValidateSupply(request, configPortfolio.supplyOvnplus);
   });
 
-  test("Portfolio length", async () => {
-    expect(strategies.length).toBeGreaterThan(0);
+  test("OVN+ Portfolio length", async () => {
+    expect(strategies.length, 'Portfolio length should be greater than 0').toBeGreaterThan(0);
   });
 
-  test("Sum of strategies balance", async () => {
+  test("OVN+ Sum of strategies balance", async () => {
     const strategiesSum: number = strategies.reduce(
       (sum: number, item: Strategies) => sum + parseFloat(item.netAssetValue),
       0
     );
     const difference = Math.abs(strategiesSum - supply);
-    expect(difference).toBeLessThanOrEqual(acceptableInaccuracy);
+    expect(difference, `strategiesSum - total supply should be less than ${acceptableInaccuracy}`).toBeLessThanOrEqual(acceptableInaccuracy);
   });
 });
 
