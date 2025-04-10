@@ -4,14 +4,14 @@
   "description": "Playwright tests with Prometheus exporter",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/playwright-prometheus-exporter/src/index.js",
-    "test": "playwright test",
+    "test": "npx playwright test",
     "test:dev": "TEST_ENV=dev playwright test",
     "test:prod": "TEST_ENV=prod playwright test",
     "test:list": "playwright test --reporter=list",
     "dev": "nodemon --exec ts-node playwright-prometheus-exporter/src/index.ts",
     "test:api:watch:linux": "while true; do npx playwright test; sleep 60; done",
-    "test:api:watch:windows": "powershell -Command \"while ($true) { npx playwright test; Start-Sleep -Seconds 60 }\""
+    "test:api:watch:windows": "powershell -Command \"while ($true) { npx playwright test; Start-Sleep -Seconds 60 }\"",
+    "report": "allure serve"
   },
   "dependencies": {
     "axios": "^1.6.7",

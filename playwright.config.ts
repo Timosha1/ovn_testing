@@ -20,6 +20,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [
     ['list'],
+    ["allure-playwright", {
+      outputDir: 'allure-results',
+      suiteTitle: false, // If true implicitly add each test into a test suite named after its file name.
+    }],
   ],
   use: {
     ...environments[env as keyof typeof environments],
@@ -27,7 +31,7 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'Api testing',
       use: { ...devices['Desktop Chrome'] },
     },
   ],

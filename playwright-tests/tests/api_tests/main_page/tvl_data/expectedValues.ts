@@ -1,8 +1,8 @@
 import { Chain } from './types';
 
-export const apiUrl = 'https://backend.overnight.fi/stat/tvl-data';
+export const apiUrlTvlData = 'https://backend.overnight.fi/stat/tvl-data';
 
-// Конкретные значения "value:" не используются в тесте
+// Это ожидаемые значения name по каждой сети. Конкретные значения "value:" не используются в тесте, они для примера.
 export const expectedValues: Chain[] = [
   {
     chainName: 'arbitrum',

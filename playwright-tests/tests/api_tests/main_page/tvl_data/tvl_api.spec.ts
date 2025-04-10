@@ -1,77 +1,54 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
 import { Chain } from './types';
-import {expectedValues, apiUrl} from './expectedValues';
+import {expectedValues, apiUrlTvlData } from './expectedValues';
 
-test.beforeEach('Tvl API', async () => {
-  console.log(`Running ${test.info().title}`);
-});
+let cachedChainValues: Chain[];
 
-// flaky test
-test.skip('Tvl data API request sent from main page', async ({ page }) => {
-
-  page.on('request', request => {
-    if (request.url().includes(apiUrl)) {
-      console.log(`>> Tvl data Request: ${request.method()} ${request.url()}`);
-    }
-  });
-  page.on('response', response => {
-    if (response.url().includes(apiUrl)) {
-      console.log(`<< Tvl data Response: ${response.status()} ${response.url()}`);
-    }
-  });
-
-  await page.goto('https://app.overnight.fi');
-  //await page.waitForLoadState('networkidle');
-
-  const apiResponse = await page.waitForResponse(
-    response => response.url() === apiUrl && response.request().method() === 'GET'
-  );
-  expect(apiResponse.status()).toBe(200);
-  const responseBody = await apiResponse.json();
-  expect(Array.isArray(responseBody)).toBe(true);
-});
-
-test.describe('Chain Values', () => {
-  async function getChainValues(request: APIRequestContext): Promise<Chain[]> {
-    const response = await request.get(apiUrl);
+test.describe('Check tvl data', () => {
+  test.beforeAll(async ({ request }) => {
+    console.log('Fetching TVL data...');
+    const response = await request.get(apiUrlTvlData);
     expect(response.status()).toBe(200);
-    return response.json();
-  }
-
-  test('Check response structure', async ({ request }) => {
-    const chainValues = await getChainValues(request);
-    expect(Array.isArray(chainValues)).toBe(true);
-    chainValues.forEach((chain) => {
-      expect(chain).toHaveProperty('chainName');
-      expect(chain).toHaveProperty('values');
-      expect(Array.isArray(chain.values)).toBe(true);
-      chain.values.forEach((value) => {
-        expect(value).toHaveProperty('name');
-        expect(value).toHaveProperty('value');
-        expect(typeof value.value).toBe('number');
-      });
-    });
+    cachedChainValues = await response.json();
+    console.log('TVL data fetched successfully.');
   });
 
-  expectedValues.forEach((expectedChain) => {
-    test(`Check values for ${expectedChain.chainName}`, async ({ request }) => {
-      const chainValues = await getChainValues(request);
-      const chain = chainValues.find((c) => c.chainName === expectedChain.chainName);
+  test.beforeEach('Log test name', async () => {
+    console.log(`Running ${test.info().title}`);
+  });
 
-      if (chain) {
-        expectedChain.values.forEach((expectedValue) => {
-          const value = chain.values.find((v) => v.name === expectedValue.name);
+  test('Check TVL data response structure', async () => {
+    expect(Array.isArray(cachedChainValues), 'cachedChainValues should be an array').toBe(true);
 
-          if(value){
-            expect(value.value).toBeGreaterThan(0);
-          } else {
-            expect(value).toBeDefined();
-          }
+    for (const chain of cachedChainValues) {
+      expect(chain, `Chain "${chain.chainName}" should have property 'chainName'`).toHaveProperty('chainName');
+      expect(chain, `Chain "${chain.chainName}" should have property 'values'`).toHaveProperty('values');
+      expect(Array.isArray(chain.values),`Chain "${chain.chainName}".values should be an array`).toBe(true);
 
-        });
-      } else {
-        expect(chain).toBeDefined();
+      for (const value of chain.values) {
+        expect(value, `Chain "${chain.chainName}", value "${value.name}" should have property 'name'`).toHaveProperty('name');
+        expect(value, `Chain "${chain.chainName}", value "${value.name}" should have property 'value'`).toHaveProperty('value');
+        expect(typeof value.value, `Chain "${chain.chainName}", value "${value.name}".value should be a number, but got ${typeof value.value}`).toBe('number');
       }
-    });
+    }
+  });
+
+  test('Check values against expectedValues', async () => {
+    expect(cachedChainValues, 'Data should have been fetched in beforeAll').toBeDefined();
+
+    for (const expectedChain of expectedValues) {
+      const actualChain = cachedChainValues.find((chain) => chain.chainName === expectedChain.chainName);
+      expect(actualChain, `Chain with name "${expectedChain.chainName}" should be present`).toBeDefined();
+
+      if (actualChain) {
+        for (const expectedValue of expectedChain.values) {
+          const actualValue = actualChain.values.find((value) => value.name === expectedValue.name);
+          expect(actualValue, `Value "${expectedValue.name}" in chain "${expectedChain.chainName}" should be present`).toBeDefined();
+          if (actualValue) {
+            expect(actualValue.value, 'TVL value should be greater than 0').toBeGreaterThan(0);
+          }
+        }
+      }
+    }
   });
 });
